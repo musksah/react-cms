@@ -167,17 +167,17 @@ export default function MenuC() {
                     </div>
                     <Divider />
                     <List>
-                        <ListItem button key={1} component={Link} to='/Menu/Productos'>
-                            <ListItemIcon>
-                                <ShoppingCartIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Productos" />
-                        </ListItem>
-                        <ListItem button key={2} component={Link} to='/Menu/Pedidos'>
+                        <ListItem button key={1} component={Link} to='/Menu/Pedidos'>
                             <ListItemIcon>
                                 <AssignmentIcon />
                             </ListItemIcon>
                             <ListItemText primary="Pedidos" />
+                        </ListItem>
+                        <ListItem button key={2} component={Link} to='/Menu/Productos'>
+                            <ListItemIcon>
+                                <ShoppingCartIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Productos" />
                         </ListItem>
                     </List>
                 </Drawer>
