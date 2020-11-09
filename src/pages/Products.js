@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, Backdrop, CircularProgress, Dialog, DialogTitle, DialogContent, TableRow, Paper, TablePagination, Button, InputLabel, TextField } from '@material-ui/core';
+import { Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, Backdrop, Typography, IconButton, CircularProgress, Dialog, DialogContent, TableRow, Paper, TablePagination, Button, InputLabel, TextField } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { useHistory } from "react-router-dom";
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
 import EditIcon from '@material-ui/icons/Edit';
-import MuiAlert from '@material-ui/lab/Alert';
+import CloseIcon from '@material-ui/icons/Close';
 import Enviroment from '../enviroment';
 
 const URL = `${Enviroment.urlApi}/item`;
@@ -44,7 +45,24 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1000,
         color: '#fff',
     },
+    closeButton: {
+        position: 'absolute',
+        right: theme.spacing(1),
+        top: theme.spacing(1),
+        color: theme.palette.grey[500],
+    },
 }));
+
+const DialogTitle = withStyles(useStyles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+        <MuiDialogTitle className={classes.root} {...other}>
+            <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+                <CloseIcon />
+            </IconButton>
+        </MuiDialogTitle>
+    );
+});
 
 export default function Product() {
     const classes = useStyles();
@@ -76,13 +94,13 @@ export default function Product() {
     };
 
 
-    const changeProduct = (product) => {
-        setName(product.name);
-        setSubtitle(product.subtitle);
-        setDescription(product.description);
-        setPrice(product.price);
-        setStock(product.stock);
-        setId(product.id_item);
+    const changeProduct = (p) => {
+        setName(p.name);
+        setSubtitle(p.subtitle);
+        setDescription(p.description);
+        setPrice(p.price);
+        setStock(p.stock);
+        setId(p.id_item);
         setVisible(true);
     }
 
@@ -90,7 +108,6 @@ export default function Product() {
         setOpenProgress(true);
         axios.get(URL).then(res => {
             setOpenProgress(false);
-            console.log(res.data);
             setProduct(res.data);
         });
     }
@@ -192,7 +209,7 @@ export default function Product() {
                         />
                     </Paper>
                 </Grid>
-                <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={visible}>
+                <Dialog aria-labelledby="customized-dialog-title" open={visible}>
                     <DialogTitle id="customized-dialog-title" onClose={handleClose}>
                         Editar Producto
                     </DialogTitle>
