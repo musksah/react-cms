@@ -9,8 +9,10 @@ import axios from 'axios';
 import Enviroment from '../enviroment';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import EmailIcon from '@material-ui/icons/Email';
 import Products from './Products'
 import Orders from './Orders'
+import Emails from './Emails'
 
 const URL = `${Enviroment.urlApi}/user`;
 
@@ -179,6 +181,12 @@ export default function MenuC() {
                             </ListItemIcon>
                             <ListItemText primary="Productos" />
                         </ListItem>
+                        <ListItem button key={3} component={Link} to='/Menu/Correos'>
+                            <ListItemIcon>
+                                <EmailIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Correos" />
+                        </ListItem>
                     </List>
                 </Drawer>
 
@@ -187,6 +195,7 @@ export default function MenuC() {
                 <Switch>
                     <Route path="/Menu/Pedidos" component={Orders} />
                     <Route path="/Menu/Productos" component={Products} />
+                    <Route path="/Menu/Correos" component={Emails} />
                     <Redirect from="/" to="/Menu/Pedidos" />
                 </Switch>
             </Box>

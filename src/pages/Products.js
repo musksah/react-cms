@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, Backdrop, Typography, IconButton, CircularProgress, Dialog, DialogContent, TableRow, Paper, TablePagination, Button, InputLabel, TextField } from '@material-ui/core';
+import { Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, Backdrop, DialogTitle, IconButton, CircularProgress, Dialog, DialogContent, TableRow, Paper, TablePagination, Button, InputLabel, TextField } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { useHistory } from "react-router-dom";
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
 import EditIcon from '@material-ui/icons/Edit';
 import CloseIcon from '@material-ui/icons/Close';
@@ -53,16 +52,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const DialogTitle = withStyles(useStyles)((props) => {
-    const { children, classes, onClose, ...other } = props;
-    return (
-        <MuiDialogTitle className={classes.root} {...other}>
-            <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-                <CloseIcon />
-            </IconButton>
-        </MuiDialogTitle>
-    );
-});
 
 export default function Product() {
     const classes = useStyles();
@@ -210,8 +199,11 @@ export default function Product() {
                     </Paper>
                 </Grid>
                 <Dialog aria-labelledby="customized-dialog-title" open={visible}>
-                    <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+                    <DialogTitle id="customized-dialog-title" >
                         Editar Producto
+                        <IconButton aria-label="close" className={classes.closeButton} onClick={handleClose}>
+                            <CloseIcon />
+                        </IconButton>
                     </DialogTitle>
                     <DialogContent dividers>
                         <Grid item xs={12} style={{ marginTop: '1em', marginBottom: '1em' }}>

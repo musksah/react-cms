@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, Table, TableBody, Typography, TableCell, TableContainer, TableHead, Backdrop, CircularProgress, Dialog, DialogTitle, DialogContent, TableRow, Paper, TablePagination, Button, InputLabel, TextField } from '@material-ui/core';
+import { Box, Grid, Table, TableBody, Typography, TableCell, TableContainer, TableHead, IconButton, Backdrop, CircularProgress, Dialog, DialogTitle, DialogContent, TableRow, Paper, TablePagination, Button, InputLabel, TextField } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
-import EditIcon from '@material-ui/icons/Edit';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import CloseIcon from '@material-ui/icons/Close';
 import Enviroment from '../enviroment';
 
 const URL = `${Enviroment.urlApi}/order`;
@@ -35,6 +36,16 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    closeButton: {
+        position: 'absolute',
+        right: theme.spacing(1),
+        top: theme.spacing(1),
+        color: theme.palette.grey[500],
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1000,
+        color: '#fff',
     },
 }));
 
@@ -74,7 +85,7 @@ export default function Order() {
     const orderDetail = (o) => {
         setVisible(true);
         setOrderDetails(o.order_details);
-        setOrderId(o.id_order);
+        setOrderId(o.order_code);
         setOrderS(o.shipping);
     }
 
@@ -109,7 +120,7 @@ export default function Order() {
                                     {order.length > 0 ?
                                         order.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(o => (
                                             <TableRow key={o.id_order}>
-                                                <TableCell align="left">{o.id_order}</TableCell>
+                                                <TableCell align="left">{o.order_code}</TableCell>
                                                 <TableCell align="left">{o.shipping.agreed_date}</TableCell>
                                                 <TableCell align="left">{o.status}</TableCell>
                                                 <TableCell align="left">{o.shipping.name} {o.shipping.lastname}</TableCell>
@@ -120,7 +131,7 @@ export default function Order() {
                                                     color="primary"
                                                     onClick={() => orderDetail(o)}
                                                 >
-                                                    <EditIcon />
+                                                    <VisibilityIcon />
                                                 </Button></TableCell>
                                             </TableRow>
                                         ))
@@ -145,9 +156,12 @@ export default function Order() {
                         />
                     </Paper>
                 </Grid>
-                <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={visible}>
-                    <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+                <Dialog aria-labelledby="customized-dialog-title" open={visible}>
+                    <DialogTitle id="customized-dialog-title">
                         Detalle Orden No {orderId}
+                        <IconButton aria-label="close" className={classes.closeButton} onClick={handleClose}>
+                            <CloseIcon />
+                        </IconButton>
                     </DialogTitle>
                     <DialogContent dividers>
                         <Grid container>
