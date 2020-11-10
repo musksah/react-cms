@@ -3,10 +3,8 @@ import clsx from 'clsx';
 import Box from '@material-ui/core/Box';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { ExitToApp, ChevronRight, ChevronLeft, Menu } from '@material-ui/icons';
-import { Backdrop, CircularProgress, ListItemIcon, ListItemText, ListItem, IconButton, Divider, CssBaseline, List, Typography, Toolbar, AppBar, Drawer } from '@material-ui/core';
+import { Backdrop, CircularProgress, ListItemIcon, ListItemText, ListItem, IconButton, Divider, CssBaseline, List, Toolbar, AppBar, Drawer } from '@material-ui/core';
 import { Switch, Route, Link, useHistory, Redirect } from "react-router-dom";
-import axios from 'axios';
-import Enviroment from '../enviroment';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import EmailIcon from '@material-ui/icons/Email';
@@ -14,7 +12,6 @@ import Products from './Products'
 import Orders from './Orders'
 import Emails from './Emails'
 
-const URL = `${Enviroment.urlApi}/user`;
 
 
 const drawerWidth = 300;
@@ -92,7 +89,6 @@ export default function MenuC() {
     const [open, setOpen] = useState(false);
     const history = useHistory();
     const [openProgress, setOpenProgress] = useState(false);
-    // const [module, setModule] = useState([]);
 
     useEffect(() => {
         if (localStorage.getItem("h_tiovad") === null) {

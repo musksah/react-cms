@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, Backdrop, DialogTitle, IconButton, CircularProgress, Dialog, DialogContent, TableRow, Paper, TablePagination, Button, InputLabel, TextField } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import EditIcon from '@material-ui/icons/Edit';
 import CloseIcon from '@material-ui/icons/Close';
@@ -55,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Product() {
     const classes = useStyles();
-    const history = useHistory();
     const [openProgress, setOpenProgress] = useState(false);
     const [visible, setVisible] = useState(false);
     const [product, setProduct] = useState([]);

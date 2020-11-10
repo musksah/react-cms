@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, Table, TableBody, Typography, TableCell, TableContainer, TableHead, IconButton, Backdrop, CircularProgress, Dialog, DialogTitle, DialogContent, TableRow, Paper, TablePagination, Button, InputLabel, TextField } from '@material-ui/core';
+import { Box, Grid, Table, TableBody, Typography, TableCell, TableContainer, TableHead, IconButton, Backdrop, CircularProgress, Dialog, DialogTitle, DialogContent, TableRow, Paper, TablePagination, Button } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import CloseIcon from '@material-ui/icons/Close';
@@ -51,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Order() {
     const classes = useStyles();
-    const history = useHistory();
     const [openProgress, setOpenProgress] = useState(false);
     const [visible, setVisible] = useState(false);
     const [order, setOrder] = useState([]);
