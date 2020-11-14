@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, Backdrop, DialogTitle, IconButton, CircularProgress, Dialog, DialogContent, TableRow, Paper, TablePagination, Button, InputLabel, TextField } from '@material-ui/core';
+import { Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, Backdrop, DialogTitle, IconButton, CircularProgress, Dialog, DialogContent, TableRow, Paper, TablePagination, Button, InputLabel, TextField, Typography } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import EditIcon from '@material-ui/icons/Edit';
@@ -141,8 +141,12 @@ export default function Product() {
             <Backdrop className={classes.backdrop} open={openProgress}>
                 <CircularProgress color="inherit" variant="indeterminate" disableShrink style={{ width: 80, height: 80 }} />
             </Backdrop>
+            <center>
+                <Typography variant="h5" style={{marginBottom:'1.5em'}}>
+                    PRODUCTOS
+                </Typography>
+            </center>
             <Grid container className={classes.centered}>
-
                 <Grid item xs={10}>
                     <Paper className={classes.root}>
                         <TableContainer >
