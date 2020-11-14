@@ -61,6 +61,10 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1000,
         color: '#fff',
     },
+    detail_shipping:{
+        color:'rgba(0, 0, 0, 0.87)',
+        fontSize:'1.1em'
+    }
 }));
 
 export default function Order() {
@@ -117,8 +121,12 @@ export default function Order() {
             <Backdrop className={classes.backdrop} open={openProgress}>
                 <CircularProgress color="inherit" variant="indeterminate" disableShrink style={{ width: 80, height: 80 }} />
             </Backdrop>
+            <center>
+                <Typography variant="h5" style={{marginBottom:'1.5em'}}>
+                    PEDIDOS
+                </Typography>
+            </center>
             <Grid container className={classes.centered}>
-
                 <Grid item xs={10}>
                     <Paper className={classes.root}>
                         <TableContainer >
@@ -212,25 +220,25 @@ export default function Order() {
                                     </Table>
                                 </TableContainer>
                             </Grid>
-                            <Grid item xs={12} style={{ margin: '1em' }}>
-                                <Typography variant="h6" style={{ marginBottom: '1em' }}>Información Envío</Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    Cliente Envío:{orderS.name} {orderS.lastname}
+                            <Grid item xs={12} style={{ margin: '1em'}}>
+                                <Typography variant="h6" style={{ marginBottom: '1em' }}>Información de Envío</Typography>
+                                <Typography variant="body2" color="textSecondary" component="p" className={classes.detail_shipping}>
+                                    <strong>Cliente Envío:</strong> {orderS.name} {orderS.lastname}
                                 </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    Cédula Envío:{orderS.dni_id}
+                                <Typography variant="body2" color="textSecondary" component="p" className={classes.detail_shipping}>
+                                   <strong>Cédula Envío:</strong> {orderS.dni_id}
                                 </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    Dirección Envío:{orderS.address} {orderS.extra_address}
+                                <Typography variant="body2" color="textSecondary" component="p" className={classes.detail_shipping} >
+                                   <strong>Dirección Envío:</strong> {orderS.address} {orderS.extra_address}
                                 </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    País:{orderS.country}
+                                <Typography variant="body2" color="textSecondary" component="p" className={classes.detail_shipping}>
+                                   <strong>País:</strong> {orderS.country}
                                 </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    Ciudad:{orderS.city}
+                                <Typography variant="body2" color="textSecondary" component="p" className={classes.detail_shipping}>
+                                <strong>Ciudad:</strong> {orderS.city}
                                 </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    Teléfono:{orderS.phone}
+                                <Typography variant="body2" color="textSecondary" component="p" className={classes.detail_shipping}>
+                                   <strong>Teléfono:</strong> {orderS.phone}
                                 </Typography>
                             </Grid>
                         </Grid>
