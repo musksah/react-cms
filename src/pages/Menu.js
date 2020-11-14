@@ -88,7 +88,6 @@ export default function MenuC() {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
     const history = useHistory();
-    const [openProgress, setOpenProgress] = useState(false);
 
     useEffect(() => {
         if (localStorage.getItem("h_tiovad") === null) {
@@ -113,9 +112,6 @@ export default function MenuC() {
 
     return (
         <Box className={classes.root}>
-            <Backdrop className={classes.backdrop} open={openProgress}>
-                <CircularProgress color="inherit" variant="indeterminate" disableShrink style={{ width: 80, height: 80 }} />
-            </Backdrop>
             <CssBaseline />
             <AppBar
                 // position="fixed"

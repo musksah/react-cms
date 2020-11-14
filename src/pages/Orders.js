@@ -8,6 +8,21 @@ import Enviroment from '../enviroment';
 
 const URL = `${Enviroment.urlApi}/order`;
 
+const MESES = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+];
+
 const StyledTableCell = withStyles((theme) => ({
     head: {
         backgroundColor: "#FF0D00",
@@ -72,6 +87,11 @@ export default function Order() {
         setPage(0);
     };
 
+    const date = (data) => {
+        const f = new Date(data.toString());
+        return f.getDate() + " de " + MESES[f.getMonth()] + " del " + f.getFullYear() + " " + ("0" + (f.getHours())).slice(-2) + ":" + ("0" + (f.getMinutes())).slice(-2) + ":" + ("0" + (f.getSeconds())).slice(-2);
+    }
+
     const findOrder = () => {
         setOpenProgress(true);
         axios.get(URL).then(res => {
@@ -119,7 +139,7 @@ export default function Order() {
                                         order.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(o => (
                                             <TableRow key={o.id_order}>
                                                 <TableCell align="left">{o.order_code}</TableCell>
-                                                <TableCell align="left">{o.shipping.agreed_date}</TableCell>
+                                                <TableCell align="left">{date(o.shipping.agreed_date)}</TableCell>
                                                 <TableCell align="left">{o.status}</TableCell>
                                                 <TableCell align="left">{o.shipping.name} {o.shipping.lastname}</TableCell>
                                                 <TableCell align="left">{o.shipping.address} {o.shipping.extra_address}</TableCell>

@@ -244,7 +244,8 @@ export default function Product() {
                                             fullWidth
                                             id="description"
                                             autoComplete="off"
-                                            inputProps={{ className: classes.inputtext }}
+                                            multiline
+                                            rows={6}
                                             value={description}
                                             onChange={changeDescription}
                                         />

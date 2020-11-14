@@ -59,7 +59,6 @@ export default function Login() {
         axios.post(URL, { email, password }).then(res => {
             setOpenProgress(false);
             if (res.status === 200) {
-                console.log(res.data);
                 if (res.data.rol === 2) {
                     localStorage.setItem("h_tiovad", res.data.token);
                     localStorage.setItem("name", res.data.name.split(" ")[0]);
