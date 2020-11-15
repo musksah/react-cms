@@ -5,6 +5,7 @@ import axios from 'axios';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import CloseIcon from '@material-ui/icons/Close';
 import Enviroment from '../enviroment';
+import { green, orange, red } from '@material-ui/core/colors';
 
 const URL = `${Enviroment.urlApi}/order`;
 
@@ -61,9 +62,9 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1000,
         color: '#fff',
     },
-    detail_shipping:{
-        color:'rgba(0, 0, 0, 0.87)',
-        fontSize:'1.1em'
+    detail_shipping: {
+        color: 'rgba(0, 0, 0, 0.87)',
+        fontSize: '1.1em'
     }
 }));
 
@@ -104,6 +105,36 @@ export default function Order() {
         });
     }
 
+    const GreenButton = withStyles((theme) => ({
+        root: {
+            color: 'white',
+            backgroundColor: green[500],
+            '&:hover': {
+                backgroundColor: green[700],
+            },
+        },
+    }))(Button);
+
+    const RedButton = withStyles((theme) => ({
+        root: {
+            color: theme.palette.getContrastText(red[500]),
+            backgroundColor: red[500],
+            '&:hover': {
+                backgroundColor: red[700],
+            },
+        },
+    }))(Button);
+
+    const OrangeButton = withStyles((theme) => ({
+        root: {
+            color: 'white',
+            backgroundColor: orange[500],
+            '&:hover': {
+                backgroundColor: orange[700],
+            },
+        },
+    }))(Button);
+
     const orderDetail = (o) => {
         setVisible(true);
         setOrderDetails(o.order_details);
@@ -122,7 +153,7 @@ export default function Order() {
                 <CircularProgress color="inherit" variant="indeterminate" disableShrink style={{ width: 80, height: 80 }} />
             </Backdrop>
             <center>
-                <Typography variant="h5" style={{marginBottom:'1.5em'}}>
+                <Typography variant="h5" style={{ marginBottom: '1.5em' }}>
                     PEDIDOS
                 </Typography>
             </center>
@@ -148,7 +179,16 @@ export default function Order() {
                                             <TableRow key={o.id_order}>
                                                 <TableCell align="left">{o.order_code}</TableCell>
                                                 <TableCell align="left">{date(o.shipping.agreed_date)}</TableCell>
-                                                <TableCell align="left">{o.status}</TableCell>
+                                                <TableCell align="left">
+                                                    {o.status == "Aceptada" ? <GreenButton variant="contained" color="primary">
+                                                        {o.status}
+                                                    </GreenButton>:
+                                                    o.status == "Pendiente" ? <OrangeButton variant="contained" color="primary">
+                                                        {o.status}
+                                                    </OrangeButton>:<RedButton variant="contained" color="primary">
+                                                        {o.status}
+                                                    </RedButton>}
+                                                </TableCell>
                                                 <TableCell align="left">{o.shipping.name} {o.shipping.lastname}</TableCell>
                                                 <TableCell align="left">{o.shipping.address} {o.shipping.extra_address}</TableCell>
                                                 <TableCell align="left">$ {o.total_value}</TableCell>
@@ -220,25 +260,25 @@ export default function Order() {
                                     </Table>
                                 </TableContainer>
                             </Grid>
-                            <Grid item xs={12} style={{ margin: '1em'}}>
+                            <Grid item xs={12} style={{ margin: '1em' }}>
                                 <Typography variant="h6" style={{ marginBottom: '1em' }}>Información de Envío</Typography>
                                 <Typography variant="body2" color="textSecondary" component="p" className={classes.detail_shipping}>
                                     <strong>Cliente Envío:</strong> {orderS.name} {orderS.lastname}
                                 </Typography>
                                 <Typography variant="body2" color="textSecondary" component="p" className={classes.detail_shipping}>
-                                   <strong>Cédula Envío:</strong> {orderS.dni_id}
+                                    <strong>Cédula Envío:</strong> {orderS.dni_id}
                                 </Typography>
                                 <Typography variant="body2" color="textSecondary" component="p" className={classes.detail_shipping} >
-                                   <strong>Dirección Envío:</strong> {orderS.address} {orderS.extra_address}
+                                    <strong>Dirección Envío:</strong> {orderS.address} {orderS.extra_address}
                                 </Typography>
                                 <Typography variant="body2" color="textSecondary" component="p" className={classes.detail_shipping}>
-                                   <strong>País:</strong> {orderS.country}
+                                    <strong>País:</strong> {orderS.country}
                                 </Typography>
                                 <Typography variant="body2" color="textSecondary" component="p" className={classes.detail_shipping}>
-                                <strong>Ciudad:</strong> {orderS.city}
+                                    <strong>Ciudad:</strong> {orderS.city}
                                 </Typography>
                                 <Typography variant="body2" color="textSecondary" component="p" className={classes.detail_shipping}>
-                                   <strong>Teléfono:</strong> {orderS.phone}
+                                    <strong>Teléfono:</strong> {orderS.phone}
                                 </Typography>
                             </Grid>
                         </Grid>
