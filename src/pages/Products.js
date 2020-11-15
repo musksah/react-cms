@@ -10,7 +10,7 @@ const URL = `${Enviroment.urlApi}/item`;
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: "#FF0D00",
+        backgroundColor: "#3D4057",
         color: theme.palette.common.white,
     },
     body: {

@@ -26,7 +26,8 @@ const MESES = [
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: "#FF0D00",
+        backgroundColor: "#3D4057",
+        // backgroundColor: "#FF0D00",
         color: theme.palette.common.white,
     },
     body: {
