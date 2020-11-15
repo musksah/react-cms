@@ -10,7 +10,8 @@ const hist = createBrowserHistory();
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#FF0D00",
+      main: "#3D4057",
+      // main: "#FF0D00",
     }
   },
 });

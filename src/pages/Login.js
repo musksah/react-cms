@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import MuiAlert from '@material-ui/lab/Alert';
 import Enviroment from '../enviroment';
+import './Login.css';
 
 const URL = `${Enviroment.urlApi}/user`;
 
@@ -94,7 +95,7 @@ export default function Login() {
 
 
     return (
-        <Container component="main" maxWidth="xs" style={{ marginTop: '5rem' }}>
+        <Container component="main" maxWidth="xs" style={{ marginTop: '2.6rem' }}>
             <Backdrop className={classes.backdrop} open={openProgress}>
                 <CircularProgress color="inherit" variant="indeterminate" disableShrink style={{ width: 80, height: 80 }} />
             </Backdrop>
