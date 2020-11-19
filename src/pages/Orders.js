@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, Table, TableBody, Typography, TableCell, TableContainer, TableHead, IconButton, Backdrop, CircularProgress, Dialog, DialogTitle, DialogContent, TableRow, Paper, TablePagination, Button } from '@material-ui/core';
+import { Box, Grid, Table, TableBody, Typography, TableCell, TableContainer, Select, FormControl, TableHead, IconButton, TextField, InputLabel, Backdrop, CircularProgress, Dialog, DialogTitle, DialogContent, TableRow, Paper, TablePagination, Button } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import EditIcon from '@material-ui/icons/Edit';
 import CloseIcon from '@material-ui/icons/Close';
 import Enviroment from '../enviroment';
 import { green, orange, red } from '@material-ui/core/colors';
@@ -40,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
     root: {
         background: '#FFFFFF',
     },
+    inputtext: {
+        padding: 14
+    },
     container_card: {
         background: '#FFFFFF',
         marginBottom: '3em'
@@ -73,8 +77,15 @@ export default function Order() {
     const classes = useStyles();
     const [openProgress, setOpenProgress] = useState(false);
     const [visible, setVisible] = useState(false);
+    const [visible2, setVisible2] = useState(false);
     const [order, setOrder] = useState([]);
     const [orderId, setOrderId] = useState("");
+    const [dateO, setDateO] = useState("");
+    const [status, setStatus] = useState("");
+    const [delivered, setDelivered] = useState(0);
+    const [address, setAddress] = useState("");
+    const [price, setPrice] = useState("");
+    const [name, setName] = useState("");
     const [orderS, setOrderS] = useState([]);
     const [orderDetails, setOrderDetails] = useState([]);
     const [page, setPage] = useState(0);
@@ -94,7 +105,7 @@ export default function Order() {
     };
 
     const date = (data) => {
-        const f = new Date(data.toString());
+        const f = new Date(data.toString().replace(/\s/, 'T'));
         return f.getDate() + " de " + MESES[f.getMonth()] + " del " + f.getFullYear() + " " + ("0" + (f.getHours())).slice(-2) + ":" + ("0" + (f.getMinutes())).slice(-2) + ":" + ("0" + (f.getSeconds())).slice(-2);
     }
 
@@ -137,15 +148,46 @@ export default function Order() {
     }))(Button);
 
     const orderDetail = (o) => {
-        setVisible(true);
         setOrderDetails(o.order_details);
         setOrderId(o.order_code);
         setOrderS(o.shipping);
+        setVisible(true);
     }
 
     const handleClose = () => {
         setVisible(false);
     };
+
+    const handleClose2 = () => {
+        setVisible2(false);
+    };
+
+    const changeOrder = (o) => {
+        setOrderId(o.order_code);
+        setDateO(o.shipping.agreed_date);
+        setStatus(o.status);
+        setDelivered(o.delivered);
+        setAddress(o.shipping.address + " " + o.shipping.extra_address);
+        setPrice(o.total_value);
+        setName(o.shipping.name + " " + o.shipping.lastname);
+        setVisible2(true);
+    }
+
+    const changeDelivered = (e) => {
+        const value = e.target.value;
+        setDelivered(value);
+
+    }
+
+    const updateOrder = (e) => {
+        e.preventDefault();
+        setOpenProgress(true);
+        axios.put(URL + "/" + orderId, { delivered }).then(res => {
+            setVisible2(false);
+            setOpenProgress(false);
+            findOrder();
+        });
+    }
 
 
     return (
@@ -159,7 +201,7 @@ export default function Order() {
                 </Typography>
             </center>
             <Grid container className={classes.centered}>
-                <Grid item xs={10}>
+                <Grid item xs={11}>
                     <Paper className={classes.root}>
                         <TableContainer >
                             <Table stickyHeader aria-label="sticky table">
@@ -168,6 +210,7 @@ export default function Order() {
                                         <StyledTableCell align="left">No Orden</StyledTableCell>
                                         <StyledTableCell align="left">Fecha</StyledTableCell>
                                         <StyledTableCell align="left">Estado</StyledTableCell>
+                                        <StyledTableCell align="left">Estado Envío</StyledTableCell>
                                         <StyledTableCell align="left">Cliente Envío</StyledTableCell>
                                         <StyledTableCell align="left">Dirección Envío</StyledTableCell>
                                         <StyledTableCell align="left">Total Compra</StyledTableCell>
@@ -183,23 +226,49 @@ export default function Order() {
                                                 <TableCell align="left">
                                                     {o.status == "Aceptada" ? <GreenButton variant="contained" color="primary">
                                                         {o.status}
-                                                    </GreenButton>:
-                                                    o.status == "Pendiente" ? <OrangeButton variant="contained" color="primary">
-                                                        {o.status}
-                                                    </OrangeButton>:<RedButton variant="contained" color="primary">
-                                                        {o.status}
-                                                    </RedButton>}
+                                                    </GreenButton> :
+                                                        o.status == "Pendiente" ? <OrangeButton variant="contained" color="primary">
+                                                            {o.status}
+                                                        </OrangeButton> : <RedButton variant="contained" color="primary">
+                                                                {o.status}
+                                                            </RedButton>}
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    {o.delivered === 1 ?
+                                                        <GreenButton variant="contained" color="primary">
+                                                            Entregado
+                                                        </GreenButton> :
+                                                        <RedButton variant="contained" color="primary">
+                                                            No Entregado
+                                                        </RedButton>}
                                                 </TableCell>
                                                 <TableCell align="left">{o.shipping.name} {o.shipping.lastname}</TableCell>
                                                 <TableCell align="left">{o.shipping.address} {o.shipping.extra_address}</TableCell>
                                                 <TableCell align="left">$ {o.total_value}</TableCell>
-                                                <TableCell align="left"><Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={() => orderDetail(o)}
-                                                >
-                                                    <VisibilityIcon />
-                                                </Button></TableCell>
+                                                <TableCell align="left">
+                                                    <Grid container>
+                                                        <Grid item xs={12} md={6} >
+                                                            <Button
+                                                                variant="contained"
+                                                                color="primary"
+                                                                style={{ marginRight: '1em', marginBottom: '1em' }}
+                                                                onClick={() => orderDetail(o)}
+                                                            >
+                                                                <VisibilityIcon />
+                                                            </Button>
+                                                        </Grid>
+                                                        <Grid item xs={12} md={6}>
+                                                            <Button
+                                                                variant="contained"
+                                                                color="primary"
+                                                                style={{ marginRight: '1em', marginBottom: '1em' }}
+                                                                onClick={() => changeOrder(o)}
+                                                            >
+                                                                <EditIcon />
+                                                            </Button>
+                                                        </Grid>
+                                                    </Grid>
+                                                </TableCell>
                                             </TableRow>
                                         ))
                                         : (
@@ -282,6 +351,139 @@ export default function Order() {
                                     <strong>Teléfono:</strong> {orderS.phone}
                                 </Typography>
                             </Grid>
+                        </Grid>
+                    </DialogContent>
+                </Dialog>
+                <Dialog aria-labelledby="customized-dialog-title" open={visible2}>
+                    <DialogTitle id="customized-dialog-title">
+                        Editar Orden No {orderId}
+                        <IconButton aria-label="close" className={classes.closeButton} onClick={handleClose2}>
+                            <CloseIcon />
+                        </IconButton>
+                    </DialogTitle>
+                    <DialogContent dividers>
+                        <Grid item xs={12} style={{ marginTop: '1em', marginBottom: '1em' }}>
+                            <form onSubmit={updateOrder}>
+                                <Grid container spacing={3}>
+                                    <Grid item xs={12} >
+                                        <InputLabel htmlFor="age-native-simple" style={{ marginBottom: '1em' }}>Fecha</InputLabel>
+                                        <TextField
+                                            name="date"
+                                            variant="outlined"
+                                            required
+                                            fullWidth
+                                            id="date"
+                                            autoComplete="off"
+                                            disabled={true}
+                                            inputProps={{ className: classes.inputtext, readOnly: true }}
+                                            value={date(dateO)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6} >
+                                        <InputLabel htmlFor="age-native-simple" style={{ marginBottom: '1em' }}>No Orden</InputLabel>
+                                        <TextField
+                                            name="name"
+                                            variant="outlined"
+                                            required
+                                            fullWidth
+                                            id="name"
+                                            autoComplete="off"
+                                            disabled={true}
+                                            inputProps={{ className: classes.inputtext, readOnly: true }}
+                                            value={orderId}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6} >
+                                        <InputLabel htmlFor="age-native-simple" style={{ marginBottom: '1em' }}>Total Compra</InputLabel>
+                                        <TextField
+                                            name="price"
+                                            variant="outlined"
+                                            required
+                                            fullWidth
+                                            id="price"
+                                            autoComplete="off"
+                                            disabled={true}
+                                            inputProps={{ className: classes.inputtext, readOnly: true }}
+                                            value={price}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} >
+                                        <InputLabel htmlFor="age-native-simple" style={{ marginBottom: '1em' }}>Cliente Envío</InputLabel>
+                                        <TextField
+                                            name="name"
+                                            variant="outlined"
+                                            required
+                                            fullWidth
+                                            id="name"
+                                            autoComplete="off"
+                                            disabled={true}
+                                            inputProps={{ className: classes.inputtext, readOnly: true }}
+                                            value={name}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={6} >
+                                        <InputLabel htmlFor="age-native-simple" style={{ marginBottom: '1em' }}>Estado</InputLabel>
+                                        <TextField
+                                            name="status"
+                                            variant="outlined"
+                                            required
+                                            fullWidth
+                                            id="status"
+                                            autoComplete="off"
+                                            disabled={true}
+                                            inputProps={{ className: classes.inputtext, readOnly: true }}
+                                            value={status}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6} >
+                                        <InputLabel htmlFor="age-native-simple" style={{ marginBottom: '1em' }}>Estado Envío</InputLabel>
+                                        <FormControl variant="outlined" fullWidth>
+                                            <Select
+                                                native
+                                                value={delivered}
+                                                onChange={changeDelivered}
+                                                name="delivered"
+                                                id="delivered"
+                                                inputProps={{ className: classes.inputtext }}
+                                            >
+                                                <option value={0}>No Entregado</option>
+                                                <option value={1}>Entregado</option>
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} >
+                                        <InputLabel htmlFor="age-native-simple" style={{ marginBottom: '1em' }}>Dirección Envío</InputLabel>
+                                        <TextField
+                                            name="address"
+                                            variant="outlined"
+                                            required
+                                            fullWidth
+                                            id="address"
+                                            autoComplete="off"
+                                            disabled={true}
+                                            inputProps={{ readOnly: true }}
+                                            value={address}
+                                            multiline
+                                            rows={6}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} className={classes.centered}>
+                                        <Grid item xs={6}>
+                                            <Button
+                                                type="submit"
+                                                fullWidth
+                                                variant="contained"
+                                                color="primary"
+                                                className={classes.submit}
+                                            >
+                                                Actualizar
+                                        </Button>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+
+                            </form>
                         </Grid>
                     </DialogContent>
                 </Dialog>
