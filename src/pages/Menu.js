@@ -181,7 +181,6 @@ export default function MenuC() {
                         </ListItem>
                     </List>
                 </Drawer>
-
             </Box>
             <Box style={{ width: '100%' }}>
                 <Switch>
