@@ -3,14 +3,20 @@ import clsx from 'clsx';
 import Box from '@material-ui/core/Box';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { ExitToApp, ChevronRight, ChevronLeft, Menu } from '@material-ui/icons';
-import { Backdrop, CircularProgress, ListItemIcon, ListItemText, ListItem, IconButton, Divider, CssBaseline, List, Toolbar, AppBar, Drawer } from '@material-ui/core';
+import { Backdrop, CircularProgress, ListItemIcon, ListItemText, ListItem, IconButton, Divider, CssBaseline, List, Toolbar, AppBar, Drawer, Typography } from '@material-ui/core';
 import { Switch, Route, Link, useHistory, Redirect } from "react-router-dom";
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import EmailIcon from '@material-ui/icons/Email';
-import Products from './Products'
-import Orders from './Orders'
-import Emails from './Emails'
+import Collapse from '@material-ui/core/Collapse';
+import PermMediaIcon from '@material-ui/icons/PermMedia';
+import StarBorder from '@material-ui/icons/StarBorder';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import Products from './Products';
+import Orders from './Orders';
+import Emails from './Emails';
+import CarrouselPersonalization from './Personalize/Carrousel';
 
 
 
@@ -81,19 +87,22 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff',
     },
+    nested: {
+        paddingLeft: theme.spacing(4),
+    },
 }));
 
 export default function MenuC() {
     const classes = useStyles();
     const theme = useTheme();
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
+    const [openPersonalize, setopenPersonalize] = useState(false);
     const history = useHistory();
 
     useEffect(() => {
         if (localStorage.getItem("h_tiovad") === null) {
             history.push("/");
         }
-
     }, []);
 
     const handleDrawerOpen = () => {
@@ -102,6 +111,10 @@ export default function MenuC() {
 
     const handleDrawerClose = () => {
         setOpen(false);
+    };
+
+    const handleClick = () => {
+        setopenPersonalize(!openPersonalize);
     };
 
 
@@ -114,6 +127,7 @@ export default function MenuC() {
         <Box className={classes.root}>
             <CssBaseline />
             <AppBar
+                
                 // position="fixed"
                 className={clsx(classes.appBar, {
                     [classes.appBarShift]: open,
@@ -155,6 +169,7 @@ export default function MenuC() {
                     }}
                 >
                     <div className={classes.toolbar}>
+                        <Typography style={{textAlign:'left', fontWeight:'700', marginLeft:'2em'}}>Administrador Fullips</Typography>
                         <IconButton onClick={handleDrawerClose}>
                             {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
                         </IconButton>
@@ -179,14 +194,32 @@ export default function MenuC() {
                             </ListItemIcon>
                             <ListItemText primary="Correos" />
                         </ListItem>
+                        <ListItem button onClick={handleClick}>
+                            <ListItemIcon>
+                                <PermMediaIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Personalizar" />
+                            {openPersonalize ? <ExpandLess /> : <ExpandMore />}
+                        </ListItem>
+                        <Collapse in={openPersonalize} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding>
+                                <ListItem button className={classes.nested} key={4} component={Link} to='/Menu/Personalizar/Carrousel'>
+                                    <ListItemIcon>
+                                        <StarBorder />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Carrousel" button/>
+                                </ListItem>
+                            </List>
+                        </Collapse>
                     </List>
                 </Drawer>
             </Box>
-            <Box style={{ width: '100%' }}>
+            <Box style={{ width: '100%', backgroundColor:'#E9E9E9' }}>
                 <Switch>
                     <Route path="/Menu/Pedidos" component={Orders} />
                     <Route path="/Menu/Productos" component={Products} />
                     <Route path="/Menu/Correos" component={Emails} />
+                    <Route path="/Menu/Personalizar/Carrousel" component={CarrouselPersonalization} />
                     <Redirect from="/" to="/Menu/Pedidos" />
                 </Switch>
             </Box>

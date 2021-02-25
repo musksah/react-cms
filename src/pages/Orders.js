@@ -49,8 +49,8 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: '3em'
     },
     content: {
-        marginTop: '8em',
-        marginBottom: '8em',
+        marginTop: '4.6em',
+        marginBottom: '30em',
     },
     centered: {
         display: 'flex',
@@ -195,11 +195,9 @@ export default function Order() {
             <Backdrop className={classes.backdrop} open={openProgress}>
                 <CircularProgress color="inherit" variant="indeterminate" disableShrink style={{ width: 80, height: 80 }} />
             </Backdrop>
-            <center>
-                <Typography variant="h5" style={{ marginBottom: '1.5em' }}>
-                    PEDIDOS
-                </Typography>
-            </center>
+            <Box style={{ backgroundColor: '#fff', paddingTop: '1em', paddingBottom: '1em', paddingLeft: '2em', marginBottom: '4em' }}>
+                <Typography variant="body" style={{ textAlign: 'left', fontWeight: '600' }}>PEDIDOS</Typography>
+            </Box>
             <Grid container className={classes.centered}>
                 <Grid item xs={11}>
                     <Paper className={classes.root}>

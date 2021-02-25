@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: '3em'
     },
     content: {
-        marginTop: '8em',
-        marginBottom: '8em'
+        marginTop: '4.6em',
+        marginBottom: '30em',
     }
     ,
     centered: {
@@ -141,11 +141,9 @@ export default function Product() {
             <Backdrop className={classes.backdrop} open={openProgress}>
                 <CircularProgress color="inherit" variant="indeterminate" disableShrink style={{ width: 80, height: 80 }} />
             </Backdrop>
-            <center>
-                <Typography variant="h5" style={{marginBottom:'1.5em'}}>
-                    PRODUCTOS
-                </Typography>
-            </center>
+            <Box style={{ backgroundColor: '#fff', paddingTop: '1em', paddingBottom: '1em',  marginBottom: '4em' }}>
+                <Typography variant="body" style={{ textAlign: 'left', fontWeight: '600', marginLeft:'2em' }}>PRODUCTOS FULLIPS</Typography>
+            </Box>
             <Grid container className={classes.centered}>
                 <Grid item xs={10}>
                     <Paper className={classes.root}>
@@ -153,7 +151,7 @@ export default function Product() {
                             <Table stickyHeader aria-label="sticky table">
                                 <TableHead>
                                     <TableRow>
-                                        <StyledTableCell align="left">Nombre</StyledTableCell>
+                                        <StyledTableCell align="left">Producto</StyledTableCell>
                                         <StyledTableCell align="left">Subtitulo</StyledTableCell>
                                         <StyledTableCell align="left">Descripción</StyledTableCell>
                                         <StyledTableCell align="left">Precio</StyledTableCell>

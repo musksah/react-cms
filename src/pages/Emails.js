@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: '10%'
     },
     content: {
-        marginTop: '8em',
-        marginBottom: '8em',
+        marginTop: '4.6em',
+        marginBottom: '30em',
     },
     centered: {
         display: 'flex',
@@ -129,6 +129,9 @@ export default function Order() {
             <Backdrop className={classes.backdrop} open={openProgress}>
                 <CircularProgress color="inherit" variant="indeterminate" disableShrink style={{ width: 80, height: 80 }} />
             </Backdrop>
+            <Box style={{ backgroundColor: '#fff', paddingTop: '1em', paddingBottom: '1em',  marginBottom: '4em' }}>
+                <Typography variant="body" style={{ textAlign: 'left', fontWeight: '600', marginLeft:'2em' }}>OPCIONES FULLIPS</Typography>
+            </Box>
             <Grid container className={classes.centered}>
                 <Grid xs={6}>
                     {/* <center>
