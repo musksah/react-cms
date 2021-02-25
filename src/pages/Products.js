@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, Backdrop, DialogTitle, IconButton, CircularProgress, Dialog, DialogContent, TableRow, Paper, TablePagination, Button, InputLabel, TextField, Typography } from '@material-ui/core';
+import { Box, Grid, Table, TableBody, Snackbar, TableCell, Checkbox, TableContainer, TableHead, Backdrop, DialogTitle, IconButton, CircularProgress, Dialog, DialogContent, TableRow, Paper, TablePagination, Button, InputLabel, TextField, Typography } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import EditIcon from '@material-ui/icons/Edit';
 import CloseIcon from '@material-ui/icons/Close';
 import Enviroment from '../enviroment';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const URL = `${Enviroment.urlApi}/item`;
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -65,6 +70,11 @@ export default function Product() {
     const [stock, setStock] = useState(0);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [checkbox, setCheckbox] = useState(false);
+    const [visiblePrice, setVisiblePrice] = useState(true);
+    const [price2, setPrice2] = useState("");
+    const [message, setMessage] = useState("");
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         findProduct();
@@ -88,13 +98,21 @@ export default function Product() {
         setPrice(p.price);
         setStock(p.stock);
         setId(p.id_item);
+        setVisiblePrice(true);
         setVisible(true);
+        setCheckbox(false);
+        setPrice2(p.discounted_price);
+        if (parseInt(p.is_discounted) === 1) {
+            setCheckbox(true);
+            setVisiblePrice(false);
+        }
     }
 
     const findProduct = () => {
         setOpenProgress(true);
         axios.get(URL).then(res => {
             setOpenProgress(false);
+            console.log(res.data);
             setProduct(res.data);
         });
     }
@@ -123,16 +141,57 @@ export default function Product() {
 
     const updateProduct = (e) => {
         e.preventDefault();
-        setOpenProgress(true);
-        axios.put(URL + "/" + id, { name, subtitle, description, price, stock }).then(res => {
-            setVisible(false);
-            setOpenProgress(false);
-            findProduct();
-        });
+        if (checkbox === true && parseInt(price2) >= parseInt(price)) {
+            openMessage("El precio con descuento no deberia ser mayor o igual al precio normal.");
+        } else {
+            let is_discounted = 0;
+            if (checkbox === true) {
+                is_discounted = 1;
+            }
+            setOpenProgress(true);
+            axios.put(URL + "/" + id, { name, subtitle, description, price, stock, is_discounted, discounted_price: price2 }).then(res => {
+                setVisible(false);
+                setOpenProgress(false);
+                findProduct();
+            });
+        }
     }
 
     const handleClose = () => {
         setVisible(false);
+    };
+
+    const changeCheckbox = (e) => {
+        let checked = e.target.checked;
+        setCheckbox(checked);
+        if (checked === true) {
+            setVisiblePrice(false);
+        } else {
+            setVisiblePrice(true);
+            setPrice2("");
+        }
+    }
+
+    const changePrice2 = (e) => {
+        const value = e.target.value;
+        setPrice2(value);
+    }
+
+    const openMessage = (message) => {
+        setMessage(message);
+        handleClick();
+    }
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const closeMessage = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
     };
 
 
@@ -155,6 +214,8 @@ export default function Product() {
                                         <StyledTableCell align="left">Subtitulo</StyledTableCell>
                                         <StyledTableCell align="left">Descripción</StyledTableCell>
                                         <StyledTableCell align="left">Precio</StyledTableCell>
+                                        <StyledTableCell align="left">Precio con Descuento</StyledTableCell>
+                                        <StyledTableCell align="left">Descuento</StyledTableCell>
                                         <StyledTableCell align="left">Cantidad</StyledTableCell>
                                         <StyledTableCell align="left">Editar</StyledTableCell>
                                     </TableRow>
@@ -167,6 +228,8 @@ export default function Product() {
                                                 <TableCell align="left">{p.subtitle}</TableCell>
                                                 <TableCell align="left">{p.description}</TableCell>
                                                 <TableCell align="left">{p.price}</TableCell>
+                                                <TableCell align="left">{p.discounted_price}</TableCell>
+                                                <TableCell align="left">{parseInt(p.is_discounted) === 1 ? "Sí" : "No"}</TableCell>
                                                 <TableCell align="left">{p.stock}</TableCell>
                                                 <TableCell align="left"><Button
                                                     variant="contained"
@@ -280,6 +343,23 @@ export default function Product() {
                                             onChange={changeStock}
                                         />
                                     </Grid>
+                                    <Grid item xs={6} style={{ marginBottom: '1em' }}>
+                                        <InputLabel htmlFor="age-native-simple" style={{ marginBottom: '1em' }}>Descuento</InputLabel>
+                                        <Checkbox color="white" checked={checkbox} onChange={changeCheckbox} />
+                                    </Grid>
+                                    <Grid item xs={6} hidden={visiblePrice} style={{ marginBottom: '1em' }}>
+                                        <InputLabel htmlFor="age-native-simple" style={{ marginBottom: '1em' }}>Precio con descuento</InputLabel>
+                                        <TextField
+                                            name="price2"
+                                            variant="outlined"
+                                            fullWidth
+                                            id="price2"
+                                            autoComplete="off"
+                                            inputProps={{ className: classes.inputtext }}
+                                            value={price2}
+                                            onChange={changePrice2}
+                                        />
+                                    </Grid>
                                     <Grid item xs={12} className={classes.centered}>
                                         <Grid item xs={6}>
                                             <Button
@@ -300,6 +380,11 @@ export default function Product() {
                     </DialogContent>
                 </Dialog>
             </Grid>
+            <Snackbar open={open} autoHideDuration={2000} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} onClose={closeMessage}>
+                <Alert onClose={closeMessage} severity="error">
+                    {message}
+                </Alert>
+            </Snackbar>
         </Box >
     );
 }
