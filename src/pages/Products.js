@@ -65,14 +65,14 @@ export default function Product() {
     const [name, setName] = useState("");
     const [subtitle, setSubtitle] = useState("");
     const [description, setDescription] = useState("");
-    const [price, setPrice] = useState("");
+    const [price, setPrice] = useState(0);
     const [id, setId] = useState("");
     const [stock, setStock] = useState(0);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [checkbox, setCheckbox] = useState(false);
     const [visiblePrice, setVisiblePrice] = useState(true);
-    const [price2, setPrice2] = useState("");
+    const [price2, setPrice2] = useState(0);
     const [message, setMessage] = useState("");
     const [open, setOpen] = useState(false);
 
@@ -149,7 +149,7 @@ export default function Product() {
                 is_discounted = 1;
             }
             setOpenProgress(true);
-            axios.put(URL + "/" + id, { name, subtitle, description, price, stock, is_discounted, discounted_price: price2 }).then(res => {
+            axios.put(URL + "/" + id, { name, subtitle, description, price: parseInt(price), stock, is_discounted, discounted_price: parseInt(price2) }).then(res => {
                 setVisible(false);
                 setOpenProgress(false);
                 findProduct();
@@ -168,7 +168,7 @@ export default function Product() {
             setVisiblePrice(false);
         } else {
             setVisiblePrice(true);
-            setPrice2("");
+            setPrice2(0);
         }
     }
 
