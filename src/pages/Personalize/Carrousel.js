@@ -95,6 +95,7 @@ export default function CarrouselPersonalization() {
             fileUpload(newFile,id_image,type_image).then((response) => {
                 $target.value = "";
                 setOpen(true);
+                window.location.reload(true);
             }).catch((err) => {
                 console.log(err);
             });
