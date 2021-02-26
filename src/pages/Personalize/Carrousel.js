@@ -84,7 +84,7 @@ export default function CarrouselPersonalization() {
         });
     }
 
-    const sentFile = (id, path) => {
+    const sentFile = (id, path,id_image,type_image) => {
         let $target = document.getElementById(id);
         let files = $target.files[0];
         if (typeof files === 'undefined') {
@@ -92,7 +92,7 @@ export default function CarrouselPersonalization() {
         } else {
             var blob = files.slice(0, files.size, files.type);
             let newFile = new File([blob], path, { type: files.type });
-            fileUpload(newFile).then((response) => {
+            fileUpload(newFile,id_image,type_image).then((response) => {
                 $target.value = "";
                 setOpen(true);
             }).catch((err) => {
@@ -102,10 +102,12 @@ export default function CarrouselPersonalization() {
     }
 
 
-    const fileUpload = (file) => {
+    const fileUpload = (file,id_image,type_image) => {
         const url = `${URL}/img-carrousell/update-file`;
         const formData = new FormData();
-        formData.append('file', file)
+        formData.append('file', file);
+        formData.append('id', id_image);
+        formData.append('typeimages', type_image);
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
@@ -155,7 +157,7 @@ export default function CarrouselPersonalization() {
                                         <input type="file" style={{ marginTop: '1em' }} accept=".jpg, .jpeg, .png" id={itemTImg + imgItem.id_image_carrousel} />
                                         <Button variant="contained" color="primary" component="label" style={{ marginTop: '1.5em' }} onClick={() => sentFile(itemTImg + imgItem.id_image_carrousel, itemTImg == "Desktop" ? imgItem.url : [
                                             (itemTImg == "Tablet" ? imgItem.url_tablet : imgItem.url_mobile)
-                                        ])}>
+                                        ],imgItem.id_image_carrousel,itemTImg)}>
                                             Actualizar imagen
                                         </Button>
                                     </form>
