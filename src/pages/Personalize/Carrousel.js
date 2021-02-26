@@ -155,7 +155,11 @@ export default function CarrouselPersonalization() {
                                 </Card>
                                 <center>
                                     <form>
-                                        <input type="file" style={{ marginTop: '1em' }} accept=".jpg, .jpeg, .png" id={itemTImg + imgItem.id_image_carrousel} />
+                                        
+                                        <input type="file" style={{ marginTop: '1em', display:'block' }} accept=".jpg, .jpeg, .png" id={itemTImg + imgItem.id_image_carrousel} />
+                                        <Typography variant="body2" style={{ marginTop: '1em', display:'block' }}>{itemTImg == "Desktop" ? <span>Resolución Sugerida: <strong>1600x600</strong></span> : [
+                                            (itemTImg == "Tablet" ? <span>Resolución Sugerida: <strong>1300x900</strong></span> : <span>Resolución Sugerida: <strong>500x570</strong></span>)
+                                        ]}</Typography>
                                         <Button variant="contained" color="primary" component="label" style={{ marginTop: '1.5em' }} onClick={() => sentFile(itemTImg + imgItem.id_image_carrousel, itemTImg == "Desktop" ? imgItem.url : [
                                             (itemTImg == "Tablet" ? imgItem.url_tablet : imgItem.url_mobile)
                                         ],imgItem.id_image_carrousel,itemTImg)}>
