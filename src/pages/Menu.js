@@ -7,6 +7,7 @@ import { Backdrop, CircularProgress, ListItemIcon, ListItemText, ListItem, IconB
 import { Switch, Route, Link, useHistory, Redirect } from "react-router-dom";
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import EmailIcon from '@material-ui/icons/Email';
 import Collapse from '@material-ui/core/Collapse';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
@@ -14,6 +15,7 @@ import StarBorder from '@material-ui/icons/StarBorder';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Products from './Products';
+import Coupons from './Coupons';
 import Orders from './Orders';
 import Emails from './Emails';
 import CarrouselPersonalization from './Personalize/Carrousel';
@@ -117,7 +119,6 @@ export default function MenuC() {
         setopenPersonalize(!openPersonalize);
     };
 
-
     const logOut = () => {
         localStorage.clear();
         history.push("/");
@@ -188,7 +189,13 @@ export default function MenuC() {
                             </ListItemIcon>
                             <ListItemText primary="Productos" />
                         </ListItem>
-                        <ListItem button key={3} component={Link} to='/Menu/Correos'>
+                        <ListItem button key={3} component={Link} to='/Menu/Cupones'>
+                            <ListItemIcon>
+                                <LocalOfferIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Cupones" />
+                        </ListItem>
+                        <ListItem button key={4} component={Link} to='/Menu/Correos'>
                             <ListItemIcon>
                                 <EmailIcon />
                             </ListItemIcon>
@@ -203,7 +210,7 @@ export default function MenuC() {
                         </ListItem>
                         <Collapse in={openPersonalize} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
-                                <ListItem button className={classes.nested} key={4} component={Link} to='/Menu/Personalizar/Carrousel'>
+                                <ListItem button className={classes.nested} key={5} component={Link} to='/Menu/Personalizar/Carrousel'>
                                     <ListItemIcon>
                                         <StarBorder />
                                     </ListItemIcon>
@@ -218,6 +225,7 @@ export default function MenuC() {
                 <Switch>
                     <Route path="/Menu/Pedidos" component={Orders} />
                     <Route path="/Menu/Productos" component={Products} />
+                    <Route path="/Menu/Cupones" component={Coupons} />
                     <Route path="/Menu/Correos" component={Emails} />
                     <Route path="/Menu/Personalizar/Carrousel" component={CarrouselPersonalization} />
                     <Redirect from="/" to="/Menu/Pedidos" />
